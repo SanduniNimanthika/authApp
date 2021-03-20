@@ -1,13 +1,13 @@
-import 'file:///C:/src/projects/flutterdemo/lib/signup.dart';
+import 'file:///C:/src/projects/flutterdemo/lib/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth0/flutter_auth0.dart';
 
-class Login extends StatefulWidget {
+class Signup extends StatefulWidget {
   @override
-  _LoginState createState() => _LoginState();
+  _SignupState createState() => _SignupState();
 }
 
-class _LoginState extends State<Login> {
+class _SignupState extends State<Signup> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final emailController = TextEditingController();
@@ -20,37 +20,26 @@ class _LoginState extends State<Login> {
   void initState() {
     // TODO: implement initState
     super.initState();
-     this.auth = Auth0(baseUrl: 'https://dev-59uhk7a5.us.auth0.com/', clientId:  "5o3JEbkG0RFFQL6nBRCFumqAx467Uo0u");
+       this.auth = Auth0(baseUrl: 'https://dev-59uhk7a5.us.auth0.com/', clientId: "5o3JEbkG0RFFQL6nBRCFumqAx467Uo0u");
   }
-  login({String email, String password}) async {
+  signup({String email, String password}) async {
     try {
       setState(() {
         busy = true;
       });
-      await this.auth.auth.passwordRealm({
-        'username': email,
+      await this.auth.auth.createUser({
+        'email': email,
         'password': password,
-        'realm': 'Username-Password-Authentication'
+        'connection': 'Username-Password-Authentication'
       });
       setState(() {
         busy = false;
       });
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.green,
-          content: new Text("$email has successfully logged in"),
-        ),
-      );
     } catch (e) {
       setState(() {
         busy = false;
       });
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          content: new Text(e),
-        ),
-      );
+     //
       print(e);
     }
   }
@@ -61,7 +50,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text("Signup"),
       ),
       body: SafeArea(
         child: Padding(
@@ -71,7 +60,7 @@ class _LoginState extends State<Login> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Login",
+                "Signup",
                 style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
@@ -112,12 +101,12 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(height: 20),
               InkWell(
-                onTap: () async {
-                  await login(
-                    email: emailController.text,
-                    password: passwordController.text,
-                  );
-                },
+                onTap: ()async {
+              await signup(
+              email: emailController.text,
+              password: passwordController.text,
+              );
+              },
                 child: Container(
                   height: 40,
                   decoration: BoxDecoration(
@@ -126,7 +115,7 @@ class _LoginState extends State<Login> {
                   ),
                   child: Center(
                     child: Text(
-                      "Login",
+                      "Signup",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -141,20 +130,20 @@ class _LoginState extends State<Login> {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Signup(),
+                    builder: (context) => Login(),
                   ),
                 ),
                 child: Row(
                   children: [
                     Text(
-                      "You are new? ",
+                      "Already have Account? ",
                       style: TextStyle(
                         fontSize: 13,
                         color: Colors.black,
                       ),
                     ),
                     Text(
-                      "Create new",
+                      "Login",
                       style: TextStyle(
                         fontSize: 13,
                         color: Colors.blue,
